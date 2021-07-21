@@ -19,6 +19,7 @@
     "mongoose": "^5.12.14",
     "nodemailer": "^6.6.2",
     "nodemailer-sendgrid-transport": "^0.2.0",
+    "nodemon": "^2.0.12",
     "react-search-panel": "^1.0.8",
     "socket.io": "^4.1.3"
   }
