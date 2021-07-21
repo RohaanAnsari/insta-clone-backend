@@ -1,0 +1,25 @@
+{
+  "name": "insta-backend",
+  "version": "1.0.0",
+  "description": "backend of instagram",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^7.4.5",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.14",
+    "nodemailer": "^6.6.2",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "react-search-panel": "^1.0.8",
+    "socket.io": "^4.1.3"
+  }
+}
