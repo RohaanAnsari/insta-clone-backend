@@ -28,8 +28,6 @@ router.get('/conversations/:userId', async (req, res) => {
 });
 
 router.get('/conversations/b/w/:userId', requireLogin, async (req, res) => {
-  // console.log(req.user._id);
-  // console.log(req.params.userId);
   try {
     const conversation = await Conversation.find({
       $and: [
@@ -42,6 +40,20 @@ router.get('/conversations/b/w/:userId', requireLogin, async (req, res) => {
     return res.status(200).json({ conversation, id });
   } catch (err) {
     console.log(err);
+  }
+});
+
+router.delete('/conversation/:id', async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const conversation = await Conversation.findByIdAndDelete({
+      _id: req.params.id,
+    });
+    return res
+      .status(200)
+      .json({ message: 'Deleted', conversation: conversation._id });
+  } catch (error) {
+    console.log(error);
   }
 });
 module.exports = router;
