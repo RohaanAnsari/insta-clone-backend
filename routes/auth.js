@@ -63,6 +63,7 @@ router.post('/signin', (req, res) => {
             profilePicture,
             followers,
             following,
+            savedPosts,
           } = savedUser;
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET, {
             expiresIn: '30d',
@@ -77,6 +78,7 @@ router.post('/signin', (req, res) => {
               profilePicture,
               followers,
               following,
+              savedPosts,
             },
           });
         } else {

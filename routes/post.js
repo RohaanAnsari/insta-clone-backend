@@ -157,35 +157,46 @@ router.delete('/deletecomment/:postId/:commentId', requireLogin, (req, res) => {
 });
 
 router.post('/savepost', requireLogin, async (req, res) => {
-  const user = await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $push: { savedPosts: req.body.id },
-    },
-    {
-      new: true,
-    }
-  );
-  return res.status(200).json(user);
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $push: { savedPosts: req.body.id },
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(user.savedPosts);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.post('/unsavepost', requireLogin, async (req, res) => {
-  const user = await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $pull: { savedPosts: req.body.id },
-    },
-    {
-      new: true,
-    }
-  );
-  return res.status(200).json(user);
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $pull: { savedPosts: req.body.id },
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json(user.savedPosts);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.post('/get-savedposts', requireLogin, async (req, res) => {
   try {
     const ids = req.body.ids;
-    console.log(ids);
+    //  console.log(ids);
+    if (ids.length === 0) {
+      return;
+    }
     Post.find({
       _id: {
         $in: ids,
@@ -193,7 +204,7 @@ router.post('/get-savedposts', requireLogin, async (req, res) => {
     })
       .populate('postedBy', '_id name fullName profilePicture')
       .then((post) => {
-        res.status(200).json(post);
+        return res.status(200).json(post);
       });
   } catch (error) {
     console.log(error);
