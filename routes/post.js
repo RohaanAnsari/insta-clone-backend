@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const requireLogin = require('../middleware/requireLogin');
 const Post = mongoose.model('Post');
+const User = mongoose.model('User');
 
 router.get('/allpost', requireLogin, (req, res) => {
   Post.find({ postedBy: { $ne: req.user._id } })
@@ -153,6 +154,50 @@ router.delete('/deletecomment/:postId/:commentId', requireLogin, (req, res) => {
       res.status(206).json({ error: err });
     }
   });
+});
+
+router.post('/savepost', requireLogin, async (req, res) => {
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $push: { savedPosts: req.body.id },
+    },
+    {
+      new: true,
+    }
+  );
+  return res.status(200).json(user);
+});
+
+router.post('/unsavepost', requireLogin, async (req, res) => {
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $pull: { savedPosts: req.body.id },
+    },
+    {
+      new: true,
+    }
+  );
+  return res.status(200).json(user);
+});
+
+router.post('/get-savedposts', requireLogin, async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    console.log(ids);
+    Post.find({
+      _id: {
+        $in: ids,
+      },
+    })
+      .populate('postedBy', '_id name fullName profilePicture')
+      .then((post) => {
+        res.status(200).json(post);
+      });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;
